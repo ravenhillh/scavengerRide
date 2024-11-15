@@ -1,0 +1,30 @@
+<.header>
+  Stop <%= @stop.id %>
+  <:subtitle>This is a stop record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/stops/#{@stop}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit stop</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @stop.name %></:item>
+  <:item title="Lat"><%= @stop.lat %></:item>
+  <:item title="Long"><%= @stop.long %></:item>
+  <:item title="Prompt"><%= @stop.prompt %></:item>
+  <:item title="Answer"><%= @stop.answer %></:item>
+</.list>
+
+<.back navigate={~p"/stops"}>Back to stops</.back>
+
+<.modal :if={@live_action == :edit} id="stop-modal" show on_cancel={JS.patch(~p"/stops/#{@stop}")}>
+  <.live_component
+    module={ScavengerRideWeb.StopLive.FormComponent}
+    id={@stop.id}
+    title={@page_title}
+    action={@live_action}
+    stop={@stop}
+    patch={~p"/stops/#{@stop}"}
+  />
+</.modal>

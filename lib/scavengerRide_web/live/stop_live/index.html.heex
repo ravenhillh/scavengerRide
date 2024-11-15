@@ -1,0 +1,50 @@
+<.header>
+  Listing Stops
+  <:actions>
+    <.link patch={~p"/stops/new"}>
+      <.button>New Stop</.button>
+    </.link>
+  </:actions>
+</.header>
+<div
+  id="map"
+  phx-hook="MapTrace"
+  class="h-96"
+  >
+</div>
+<.table
+  id="stops"
+  rows={@streams.stops}
+  row_click={fn {_id, stop} -> JS.navigate(~p"/stops/#{stop}") end}
+>
+  <:col :let={{_id, stop}} label="Name"><%= stop.name %></:col>
+  <:col :let={{_id, stop}} label="Lat"><%= stop.lat %></:col>
+  <:col :let={{_id, stop}} label="Long"><%= stop.long %></:col>
+  <:col :let={{_id, stop}} label="Prompt"><%= stop.prompt %></:col>
+  <:col :let={{_id, stop}} label="Answer"><%= stop.answer %></:col>
+  <:action :let={{_id, stop}}>
+    <div class="sr-only">
+      <.link navigate={~p"/stops/#{stop}"}>Show</.link>
+    </div>
+    <.link patch={~p"/stops/#{stop}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, stop}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: stop.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="stop-modal" show on_cancel={JS.patch(~p"/stops")}>
+  <.live_component
+    module={ScavengerRideWeb.StopLive.FormComponent}
+    id={@stop.id || :new}
+    title={@page_title}
+    action={@live_action}
+    stop={@stop}
+    patch={~p"/stops"}
+  />
+</.modal>

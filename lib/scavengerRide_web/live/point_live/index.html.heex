@@ -1,0 +1,50 @@
+<.header>
+  Listing Points
+  <:actions>
+    <.link phx-click="new-point">
+      <.button>New Point</.button>
+    </.link>
+  </:actions>
+</.header>
+<div
+  id="map"
+  phx-hook="MapTrace"
+  class="h-96"
+  >
+</div>
+<.table
+  id="points"
+  rows={@streams.points}
+  row_click={fn {_id, point} -> JS.navigate(~p"/points/#{point}") end}
+>
+  <:col :let={{_id, point}} label="Name"><%= point.name %></:col>
+  <:col :let={{_id, point}} label="Lat"><%= point.lat %></:col>
+  <:col :let={{_id, point}} label="Long"><%= point.long %></:col>
+  <:col :let={{_id, point}} label="Prompt"><%= point.prompt %></:col>
+  <:col :let={{_id, point}} label="Answer"><%= point.answer %></:col>
+  <:action :let={{_id, point}}>
+    <div class="sr-only">
+      <.link navigate={~p"/points/#{point}"}>Show</.link>
+    </div>
+    <.link patch={~p"/points/#{point}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, point}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: point.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="point-modal" show on_cancel={JS.patch(~p"/points")}>
+  <.live_component
+    module={ScavengerRideWeb.PointLive.FormComponent}
+    id={@point.id || :new}
+    title={@page_title}
+    action={@live_action}
+    point={@point}
+    patch={~p"/points"}
+  />
+</.modal>

@@ -1,0 +1,35 @@
+<.header>
+  Point <%= @point.id %>
+  <:subtitle>This is a point record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/points/#{@point}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit point</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @point.name %></:item>
+  <:item title="Lat"><%= @point.lat %></:item>
+  <:item title="Long"><%= @point.long %></:item>
+  <:item title="Prompt"><%= @point.prompt %></:item>
+  <:item title="Answer"><%= @point.answer %></:item>
+</.list>
+
+<.back navigate={~p"/points"}>Back to points</.back>
+
+<.modal
+  :if={@live_action == :edit}
+  id="point-modal"
+  show
+  on_cancel={JS.patch(~p"/points/#{@point}")}
+>
+  <.live_component
+    module={ScavengerRideWeb.PointLive.FormComponent}
+    id={@point.id}
+    title={@page_title}
+    action={@live_action}
+    point={@point}
+    patch={~p"/points/#{@point}"}
+  />
+</.modal>
