@@ -4,8 +4,20 @@ defmodule ScavengerRideWeb.StopLiveTest do
   import Phoenix.LiveViewTest
   import ScavengerRide.HuntsFixtures
 
-  @create_attrs %{name: "some name", long: 120.5, prompt: "some prompt", lat: 120.5, answer: "some answer"}
-  @update_attrs %{name: "some updated name", long: 456.7, prompt: "some updated prompt", lat: 456.7, answer: "some updated answer"}
+  @create_attrs %{
+    name: "some name",
+    long: 120.5,
+    prompt: "some prompt",
+    lat: 120.5,
+    answer: "some answer"
+  }
+  @update_attrs %{
+    name: "some updated name",
+    long: 456.7,
+    prompt: "some updated prompt",
+    lat: 456.7,
+    answer: "some updated answer"
+  }
   @invalid_attrs %{name: nil, long: nil, prompt: nil, lat: nil, answer: nil}
 
   defp create_stop(_) do

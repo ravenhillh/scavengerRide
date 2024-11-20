@@ -18,6 +18,10 @@ defmodule ScavengerRideWeb.StopLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
+        <div style="display: none;">
+          <.input field={@form[:lat]} type="number" label="Lat" />
+          <.input field={@form[:long]} type="number" label="Long" />
+        </div>
         <.input field={@form[:name]} type="text" label="Name" />
         <%!-- <.input field={@form[:lat]} type="number" label="Lat" step="any" />
         <.input field={@form[:long]} type="number" label="Long" step="any" /> --%>

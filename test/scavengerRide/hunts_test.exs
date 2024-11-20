@@ -21,7 +21,13 @@ defmodule ScavengerRide.HuntsTest do
     end
 
     test "create_stop/1 with valid data creates a stop" do
-      valid_attrs = %{name: "some name", long: 120.5, prompt: "some prompt", lat: 120.5, answer: "some answer"}
+      valid_attrs = %{
+        name: "some name",
+        long: 120.5,
+        prompt: "some prompt",
+        lat: 120.5,
+        answer: "some answer"
+      }
 
       assert {:ok, %Stop{} = stop} = Hunts.create_stop(valid_attrs)
       assert stop.name == "some name"
@@ -37,7 +43,14 @@ defmodule ScavengerRide.HuntsTest do
 
     test "update_stop/2 with valid data updates the stop" do
       stop = stop_fixture()
-      update_attrs = %{name: "some updated name", long: 456.7, prompt: "some updated prompt", lat: 456.7, answer: "some updated answer"}
+
+      update_attrs = %{
+        name: "some updated name",
+        long: 456.7,
+        prompt: "some updated prompt",
+        lat: 456.7,
+        answer: "some updated answer"
+      }
 
       assert {:ok, %Stop{} = stop} = Hunts.update_stop(stop, update_attrs)
       assert stop.name == "some updated name"

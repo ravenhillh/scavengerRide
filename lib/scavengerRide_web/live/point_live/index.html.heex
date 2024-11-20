@@ -6,12 +6,7 @@
     </.link>
   </:actions>
 </.header>
-<div
-  id="map"
-  phx-hook="MapTrace"
-  class="h-96"
-  >
-</div>
+<div id="map" phx-hook="MapTrace" class="h-96"></div>
 <.table
   id="points"
   rows={@streams.points}
@@ -38,7 +33,12 @@
   </:action>
 </.table>
 
-<.modal :if={@live_action in [:new, :edit]} id="point-modal" show on_cancel={JS.patch(~p"/points")}>
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="point-modal"
+  show
+  on_cancel={JS.patch(~p"/points")}
+>
   <.live_component
     module={ScavengerRideWeb.PointLive.FormComponent}
     id={@point.id || :new}

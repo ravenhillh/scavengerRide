@@ -1,17 +1,14 @@
 <.header>
-  Listing Stops
+  Create a stop!
   <:actions>
     <.link patch={~p"/stops/new"}>
       <.button>New Stop</.button>
     </.link>
+    <.button phx-click="button_clicked">View Stops</.button>
   </:actions>
 </.header>
-<div
-  id="map"
-  phx-hook="MapTrace"
-  class="h-96"
-  >
-</div>
+<div id="map" phx-hook="MapTrace" phx-update="ignore" class="h-96"></div>
+
 <.table
   id="stops"
   rows={@streams.stops}
@@ -37,7 +34,6 @@
     </.link>
   </:action>
 </.table>
-
 <.modal :if={@live_action in [:new, :edit]} id="stop-modal" show on_cancel={JS.patch(~p"/stops")}>
   <.live_component
     module={ScavengerRideWeb.StopLive.FormComponent}

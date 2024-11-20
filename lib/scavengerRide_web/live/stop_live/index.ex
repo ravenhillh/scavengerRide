@@ -21,10 +21,11 @@ defmodule ScavengerRideWeb.StopLive.Index do
   end
 
   defp apply_action(socket, :new, _params) do
-    # IO.inspect(socket.assigns)
+    %{assigns: %{lat: lat, long: long}} = socket
+
     socket
     |> assign(:page_title, "New Stop")
-    |> assign(:stop, %Stop{})
+    |> assign(:stop, %Stop{lat: lat, long: long})
   end
 
   defp apply_action(socket, :index, _params) do
@@ -44,6 +45,26 @@ defmodule ScavengerRideWeb.StopLive.Index do
     {:ok, _} = Hunts.delete_stop(stop)
 
     {:noreply, stream_delete(socket, :stops, stop)}
+  end
+
+  def handle_event("button_clicked", _value, socket) do
+    # Push an event to the client-side hook
+    stops = Hunts.list_stops()
+
+    payload =
+      stops
+      |> Enum.map(fn stop ->
+        %{
+          id: stop.id,
+          name: stop.name,
+          prompt: stop.prompt,
+          lat: stop.lat,
+          long: stop.long,
+          answer: stop.answer
+        }
+      end)
+
+    {:noreply, push_event(socket, "button_clicked_js", %{payload: payload})}
   end
 
   def handle_event("map-click", %{"lat" => lat, "long" => long}, socket) do
